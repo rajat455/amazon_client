@@ -43,7 +43,7 @@ export default function PaymentMethod({ cartItems }) {
                                 </div>
                                 <div className="d-flex align-items-center gap-3">
                                     <input type="radio" id="cod" checked={PaymentMethod === "cod"} value={"cod"} onChange={(e) => setPaymentMethod(e.target.value)} />
-                                    <label style={{ fontSize: "1.1rem" }} defaultChecked={PaymentMethod === "cod"} className="fw-bold" htmlFor="cod" onChange={() => setPaymentMethod("cod")} >Case on Delivary</label>
+                                    <label style={{ fontSize: "1.1rem" }}  className="fw-bold" htmlFor="cod" onChange={() => setPaymentMethod("cod")} >Case on Delivary</label>
                                 </div>
                             </div>
                             <div className="col-12 pt-3">

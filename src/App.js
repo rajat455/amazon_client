@@ -12,13 +12,14 @@ import CartScreen from './Screens/CartScreen';
 import ShippingScreen from './Screens/ShippingScreen';
 import PaymentMethod from './Screens/PaymentMetod';
 import CheckoutScreen from './Screens/CheckoutScreen';
+import OrderScreen from './Screens/Order';
 
 function App() {
   const [cartItems, setcartItems] = useState(JSON.parse(localStorage.getItem("cartItems") || "[]"));
   return (
     <BrowserRouter>
       <div className="App">
-        <Header cartItems={cartItems} setcartItems={setcartItems}/>
+        <Header cartItems={cartItems} setcartItems={setcartItems} />
         <main style={{ minHeight: "86.3vh" }}>
           <Routes>
             <Route path="/" element={<HomeScreen />} />
@@ -28,8 +29,9 @@ function App() {
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/shipping" element={<ShippingScreen />} />
             <Route path="/cart" element={<CartScreen cartItems={cartItems} setcartItems={setcartItems} />} />
-            <Route path="/paymentMethod" element={<PaymentMethod cartItems={cartItems}/>} />
+            <Route path="/paymentMethod" element={<PaymentMethod cartItems={cartItems} />} />
             <Route path="/checkout" element={<CheckoutScreen cartItems={cartItems} setcartItems={setcartItems} />} />
+            <Route path="/order/:orderId" element={<OrderScreen />} />
           </Routes>
         </main>
         <Footer />

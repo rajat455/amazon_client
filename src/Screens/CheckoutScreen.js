@@ -20,7 +20,6 @@ export default function CheckoutScreen({ cartItems, setcartItems }) {
     const navigate = useNavigate()
     const location = useLocation()
     const paymentMethod = location.search.split("paymentMethod=")[1]
-    const [Success, setSuccess] = useState(false);
 
     useEffect(() => {
         if (!userInfo.address) {
@@ -98,11 +97,12 @@ export default function CheckoutScreen({ cartItems, setcartItems }) {
                 shippingAddress: userInfo.address
             }
             const result = await apiHelper.createOrder(orderDetails)
+             localStorage.removeItem("cartItems")
+            setcartItems([])
             setloading(false)
             if (!result.data.order.RazorpayDetails) {
-                return console.log('COD Order')
+                return navigate(`/order/${result.data.order._id}`)
             } else {
-                console.log(result.data.order)
                 const Options = {
                     name:result.data.order.shippingAddress.fullName,
                     phone:result.data.order.shippingAddress.phone,
@@ -112,14 +112,12 @@ export default function CheckoutScreen({ cartItems, setcartItems }) {
                     amount:result.data.order.RazorpayDetails.amount,
                     currency:result.data.order.RazorpayDetails.currency,
                     razorpayOrderId:result.data.order.RazorpayDetails.id,
-                    orderId:result.data.order._id
+                    orderId:result.data.order._id,
+                    showError:seterror,
+                    navigate:navigate
                 }
                 handlePayment(Options)
             }
-
-            // localStorage.removeItem("cartItems")
-            // setcartItems([])
-            setSuccess(true)
             setloading(false)
         } catch (error) {
             setloading(false)

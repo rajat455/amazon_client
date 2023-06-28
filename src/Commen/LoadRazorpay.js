@@ -22,13 +22,22 @@ const handlePayment = async (paymentOptions) => {
     currency: paymentOptions.currency,
     name: 'Amazon',
     description: 'Test Payment',
+    order_id: paymentOptions.razorpayOrderId,
     // image: paymentOptions.image,
-    handler: async function(response) {
-      if(response && response.razorpay_payment_id){
-        const result = await apiHelper.paymentVerify({response, orderId:paymentOptions.orderId,razorpayOrderId:paymentOptions.razorpayOrderId})
-        console.log(result)
-      }else{
-        alert("Payment Verification filed")
+    handler: async function (response) {
+      if (response && response.razorpay_payment_id) {
+        try {
+          const result = await apiHelper.paymentVerify({ razorpay_payment_id: response.razorpay_payment_id, orderId: paymentOptions.orderId, razorpayOrderId: paymentOptions.razorpayOrderId })
+          if (result && result.status === 200) {
+            paymentOptions.navigate(`/order/${result.data.orderId}`)
+          }
+        } catch (error) {
+          if (error && error.response && error.response.data && error.response.data.message) {
+            paymentOptions.showError(error)
+          }
+        }
+      } else {
+        return alert("Payment Verification filed")
       }
     },
     prefill: {
